@@ -31,7 +31,7 @@ export function DirectoryPage() {
   return (
     <section>
       <header className="page-head">
-        <h1 className="lead">Four universities, one checklist.</h1>
+        <h1 className="lead">Your applications, in one place.</h1>
         <p>
           {open.length === 0
             ? "Every checklist is finished. Submitted means it is done here, not that the university has received it."
@@ -59,7 +59,7 @@ export function DirectoryPage() {
         </ul>
       ) : null}
 
-      <h2 className="section-title">The Big Four</h2>
+      <h2 className="section-title">Universities</h2>
       <ul className="directory">
         {rows.map((row) => (
           <li key={row.university.id}>

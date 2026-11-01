@@ -56,14 +56,14 @@ export const universities: University[] = [
     shortName: "UP",
     name: "University of the Philippines",
     test: "UPCAT",
-    applicationPeriod: "March–April (early cycle)",
-    examDates: "August",
-    releaseOfResults: "April–May of the following year",
+    applicationPeriod: "Mar–Apr",
+    examDates: "Aug",
+    releaseOfResults: "Apr–May",
     intro:
       "The national university. This page shows freshman admission through the UPCAT, with degree programs from UP Diliman.",
     feeNote: "Filipino applicants pay no UPCAT fee.",
     rankingNote:
-      "The real UPCAT asks for two campuses and up to four programs per campus, in priority order. This demo keeps one choice: BS Computer Science at UP Diliman.",
+      "The UPCAT asks for two campuses and up to four programs per campus. This application lists one: BS Computer Science at UP Diliman.",
     chosenProgramId: "cs",
     initialDone: sharedDone,
     programs: [
@@ -102,9 +102,9 @@ export const universities: University[] = [
     shortName: "Ateneo",
     name: "Ateneo de Manila University",
     test: "ACET",
-    applicationPeriod: "June/July–September",
-    examDates: "October–November",
-    releaseOfResults: "April–May of the following year",
+    applicationPeriod: "Jun–Sep",
+    examDates: "Oct–Nov",
+    releaseOfResults: "Apr–May",
     intro:
       "Ateneo de Manila in Quezon City. Freshman applicants take the Ateneo College Entrance Test.",
     feeNote:
@@ -150,9 +150,9 @@ export const universities: University[] = [
     shortName: "DLSU",
     name: "De La Salle University Manila",
     test: "DCAT",
-    applicationPeriod: "September–December",
-    examDates: "January–February",
-    releaseOfResults: "Late March–April",
+    applicationPeriod: "Sep–Dec",
+    examDates: "Jan–Feb",
+    releaseOfResults: "Mar–Apr",
     intro:
       "De La Salle University on Taft Avenue, Manila. Freshman applicants take the DLSU College Admission Test.",
     feeNote:
@@ -199,9 +199,9 @@ export const universities: University[] = [
     shortName: "UST",
     name: "University of Santo Tomas",
     test: "USTET",
-    applicationPeriod: "July–November",
-    examDates: "October–January (multiple batches)",
-    releaseOfResults: "April",
+    applicationPeriod: "Jul–Nov",
+    examDates: "Oct–Jan",
+    releaseOfResults: "Apr",
     intro:
       "The University of Santo Tomas on España Boulevard, Manila. Freshman applicants take the UST Entrance Test.",
     feeNote:
