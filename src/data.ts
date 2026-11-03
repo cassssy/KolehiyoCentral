@@ -4,25 +4,52 @@ export type Program = {
   summary: string;
 };
 
+/**
+ * Where a requirement lives:
+ * - "shared": one document that every university accepts, ticked once for all
+ * - "school": something the applicant's high school has to prepare
+ * - "university": asked for by this university only
+ */
+export type RequirementScope = "shared" | "school" | "university";
+
 export type Requirement = {
   id: string;
   label: string;
+  scope: RequirementScope;
 };
+
+export const MONTHS = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+] as const;
+
+export type Month = (typeof MONTHS)[number];
 
 export type University = {
   id: string;
   shortName: string;
   name: string;
   test: string;
-  applicationPeriod: string;
-  examDates: string;
-  releaseOfResults: string;
+  applicationPeriod: Month;
+  examDates: Month;
+  releaseOfResults: Month;
   intro: string;
   feeNote: string;
   rankingNote?: string;
   programs: Program[];
-  chosenProgramId: string | null;
+  initialProgramId: string | null;
   requirements: Requirement[];
+  /** University- and school-scoped requirements already done at the start of the demo. */
   initialDone: string[];
 };
 
@@ -33,20 +60,31 @@ export const applicant = {
   gradeAverage: 94,
 };
 
-const sharedDone = ["psa", "photo", "school-id", "lrn"];
+export const sharedRequirements: Requirement[] = [
+  { id: "psa", label: "PSA birth certificate", scope: "shared" },
+  { id: "photo", label: "ID photo (2×2 or passport size, white background)", scope: "shared" },
+  { id: "school-id", label: "Grade 12 school ID", scope: "shared" },
+  { id: "lrn", label: "Learner reference number (LRN)", scope: "shared" },
+];
+
+export const initialSharedDone = ["psa", "photo", "school-id", "lrn"];
+
+type Extra = { id: string; label: string };
 
 function requirements(
   recordLabel: string,
-  extras: Requirement[] = [],
-  photoLabel = "ID photo (2×2 or passport size, white background)",
+  extras: Extra[] = [],
+  options: { photo?: Extra } = {},
 ): Requirement[] {
+  const shared = options.photo
+    ? sharedRequirements.map((item) =>
+        item.id === "photo" ? { ...options.photo!, scope: "university" as const } : item,
+      )
+    : sharedRequirements;
   return [
-    { id: "psa", label: "PSA birth certificate" },
-    { id: "photo", label: photoLabel },
-    { id: "school-id", label: "Grade 12 school ID" },
-    { id: "lrn", label: "Learner reference number (LRN)" },
-    { id: "record", label: recordLabel },
-    ...extras,
+    ...shared,
+    { id: "record", label: recordLabel, scope: "school" },
+    ...extras.map((item) => ({ ...item, scope: "university" as const })),
   ];
 }
 
@@ -56,16 +94,16 @@ export const universities: University[] = [
     shortName: "UP",
     name: "University of the Philippines",
     test: "UPCAT",
-    applicationPeriod: "Mar–Apr",
-    examDates: "Aug",
-    releaseOfResults: "Apr–May",
+    applicationPeriod: "March",
+    examDates: "August",
+    releaseOfResults: "April",
     intro:
       "The national university. This page shows freshman admission through the UPCAT, with degree programs from UP Diliman.",
     feeNote: "Filipino applicants pay no UPCAT fee.",
     rankingNote:
-      "The UPCAT asks for two campuses and up to four programs per campus. This application lists one: BS Computer Science at UP Diliman.",
-    chosenProgramId: "cs",
-    initialDone: sharedDone,
+      "The UPCAT asks for two campuses and up to four programs per campus. This demo tracks one program at UP Diliman.",
+    initialProgramId: "cs",
+    initialDone: [],
     programs: [
       {
         id: "cs",
@@ -102,15 +140,15 @@ export const universities: University[] = [
     shortName: "Ateneo",
     name: "Ateneo de Manila University",
     test: "ACET",
-    applicationPeriod: "Jun–Sep",
-    examDates: "Oct–Nov",
-    releaseOfResults: "Apr–May",
+    applicationPeriod: "July",
+    examDates: "October",
+    releaseOfResults: "April",
     intro:
       "Ateneo de Manila in Quezon City. Freshman applicants take the Ateneo College Entrance Test.",
     feeNote:
       "The application fee is about ₱600–₱1,000, and is sometimes waived.",
-    chosenProgramId: "me",
-    initialDone: sharedDone,
+    initialProgramId: "me",
+    initialDone: [],
     programs: [
       {
         id: "me",
@@ -150,15 +188,15 @@ export const universities: University[] = [
     shortName: "DLSU",
     name: "De La Salle University Manila",
     test: "DCAT",
-    applicationPeriod: "Sep–Dec",
-    examDates: "Jan–Feb",
-    releaseOfResults: "Mar–Apr",
+    applicationPeriod: "October",
+    examDates: "January",
+    releaseOfResults: "April",
     intro:
       "De La Salle University on Taft Avenue, Manila. Freshman applicants take the DLSU College Admission Test.",
     feeNote:
       "The application fee is about ₱600–₱1,000, and is sometimes waived.",
-    chosenProgramId: "accountancy",
-    initialDone: ["psa", "photo", "school-id", "lrn", "record", "consent"],
+    initialProgramId: "accountancy",
+    initialDone: ["record", "consent"],
     programs: [
       {
         id: "cs",
@@ -199,14 +237,14 @@ export const universities: University[] = [
     shortName: "UST",
     name: "University of Santo Tomas",
     test: "USTET",
-    applicationPeriod: "Jul–Nov",
-    examDates: "Oct–Jan",
-    releaseOfResults: "Apr",
+    applicationPeriod: "September",
+    examDates: "November",
+    releaseOfResults: "April",
     intro:
       "The University of Santo Tomas on España Boulevard, Manila. Freshman applicants take the UST Entrance Test.",
     feeNote:
       "The application fee is about ₱600–₱1,000, and is sometimes waived.",
-    chosenProgramId: null,
+    initialProgramId: null,
     initialDone: [],
     programs: [
       {
@@ -236,7 +274,12 @@ export const universities: University[] = [
     requirements: requirements(
       "USTET grades form for Grades 9–11, signed by the principal or registrar",
       [],
-      "ID photo (2×2 or passport size, with a nameplate tag)",
+      {
+        photo: {
+          id: "photo-nameplate",
+          label: "ID photo (2×2 or passport size, with a nameplate tag)",
+        },
+      },
     ),
   },
 ];
@@ -245,9 +288,6 @@ export function findUniversity(id: string): University | undefined {
   return universities.find((university) => university.id === id);
 }
 
-export function chosenProgramName(university: University): string {
-  const program = university.programs.find(
-    (item) => item.id === university.chosenProgramId,
-  );
-  return program?.name ?? "No program yet";
+export function programName(university: University, programId: string | null): string | null {
+  return university.programs.find((item) => item.id === programId)?.name ?? null;
 }

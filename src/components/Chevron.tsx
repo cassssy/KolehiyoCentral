@@ -5,7 +5,7 @@ export function Chevron() {
         d="M6 3.5 10.5 8 6 12.5"
         fill="none"
         stroke="currentColor"
-        strokeWidth="1.6"
+        strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
