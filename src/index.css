@@ -2675,9 +2675,9 @@ summary:focus-visible {
   margin-top: 2.25rem;
 }
 
-[data-scope="shared"] { --scope: var(--seal); }
-[data-scope="school"] { --scope: var(--amber); }
-[data-scope="university"] { --scope: var(--gold); }
+[data-scope="shared"] { --scope: #027bfd; }
+[data-scope="school"] { --scope: #027bfd; }
+[data-scope="university"] { --scope: #027bfd; }
 
 .doc-summary {
   display: flex;
