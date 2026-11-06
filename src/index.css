@@ -2,7 +2,7 @@
   --room: #0a0a0a;
   --room-ink: #ffffff;
   --room-quiet: #cbd5e1;
-  --gold: #3b82f6;
+  --gold: #027bfd;
   --gold-ink: #bfdbfe;
   --gold-soft: #eff6ff;
   --paper: #ffffff;
@@ -11,8 +11,8 @@
   --ink: #0a0a0a;
   --muted: #475569;
   --line: #e2e8f0;
-  --seal: #2563eb;
-  --seal-hover: #1d4ed8;
+  --seal: #0066d6;
+  --seal-hover: #0052b0;
   --seal-light: #eff6ff;
   --amber: #7e4b09;
   --amber-soft: #faebd2;
@@ -57,7 +57,7 @@
 }
 
 html {
-  scrollbar-color: #3b82f6 var(--room);
+  scrollbar-color: #027bfd var(--room);
   scroll-behavior: smooth;
 }
 
@@ -134,7 +134,7 @@ a {
   min-height: 4rem;
   padding: 0.5rem 2rem;
   background: #ffffff;
-  border-bottom: 3px solid #3b82f6;
+  border-bottom: 3px solid #027bfd;
   position: sticky;
   top: 0;
   z-index: 20;
@@ -186,7 +186,7 @@ a {
 }
 
 .nav-link:hover {
-  color: #2563eb;
+  color: #0066d6;
   background: #dbeafe;
 }
 
@@ -210,7 +210,7 @@ a {
 }
 
 .who:hover {
-  border-color: #3b82f6;
+  border-color: #027bfd;
   background: #eff6ff;
 }
 
@@ -218,7 +218,7 @@ a {
   width: 2rem;
   height: 2rem;
   border-radius: 50%;
-  background: #3b82f6;
+  background: #027bfd;
   color: #ffffff;
   font-weight: 700;
   font-size: 0.8rem;
@@ -411,7 +411,7 @@ a {
 }
 
 .next-ready .count-pill {
-  background: rgba(37, 99, 235, 0.1);
+  background: rgba(0, 102, 214, 0.1);
   color: var(--seal);
 }
 
@@ -842,7 +842,7 @@ a {
   background: var(--seal);
   border-color: var(--seal);
   color: #ffffff;
-  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+  box-shadow: 0 0 0 4px rgba(0, 102, 214, 0.15);
 }
 
 .milestone-step.is-ready .milestone-indicator {
@@ -854,13 +854,13 @@ a {
 
 @keyframes pulse-ring {
   0% {
-    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
+    box-shadow: 0 0 0 0 rgba(2, 123, 253, 0.4);
   }
   70% {
-    box-shadow: 0 0 0 8px rgba(59, 130, 246, 0);
+    box-shadow: 0 0 0 8px rgba(2, 123, 253, 0);
   }
   100% {
-    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+    box-shadow: 0 0 0 0 rgba(2, 123, 253, 0);
   }
 }
 
@@ -1373,7 +1373,7 @@ a {
   border: 0;
   background: var(--seal);
   color: #ffffff;
-  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
+  box-shadow: 0 2px 6px rgba(0, 102, 214, 0.25);
 }
 
 .button-primary:hover {
