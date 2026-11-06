@@ -1,121 +1,64 @@
 import { Link } from "react-router-dom";
 import { Chevron } from "../components/Chevron";
+import { Icon } from "../components/Icon";
+import { RequirementBar } from "../components/RequirementBar";
 import { StatusTag } from "../components/StatusTag";
-import { actionLabel, monthsUntil, nextStepLabel, opensLabel } from "../status";
-import { useApplications, useDemo } from "../store";
+import { UniversityLogo } from "../components/UniversityLogo";
+import { actionLabel } from "../status";
+import { useApplications } from "../store";
 
 export function DirectoryPage() {
-  const { periods } = useDemo();
   const applications = useApplications();
-  const open = applications
-    .filter((item) => item.status !== "Submitted")
-    .sort((a, b) => {
-      // Finished checklists first, then whichever application window opens soonest.
-      const ready = Number(b.status === "Ready to submit") - Number(a.status === "Ready to submit");
-      return (
-        ready ||
-        monthsUntil(periods[a.university.id]) - monthsUntil(periods[b.university.id])
-      );
-    });
-  const submitted = applications.length - open.length;
 
   return (
     <section>
       <header className="page-head">
-        <h1>Your applications, in one place.</h1>
-        <p>
-          {open.length === 0
-            ? "Every application is marked submitted. Watch each university’s portal for exam permits and results."
-            : `${open.length === 1 ? "One application needs" : `${open.length} applications need`} you${
-                submitted > 0 ? `, and ${submitted} ${submitted === 1 ? "is" : "are"} submitted` : ""
-              }. Here they are, the soonest to open first.`}
-        </p>
+        <h1>Universities</h1>
+        <p>The Big Four. Open one for its checklist and programs.</p>
       </header>
 
-      {open.length > 0 ? (
-        <>
-          <h2 className="section-title">What’s next</h2>
-          <ol className="next-list">
-            {open.map((item) => {
-              const period = periods[item.university.id];
-              return (
-                <li key={item.university.id}>
-                  <Link
-                    className={item.status === "Ready to submit" ? "next next-ready" : "next"}
-                    to={`/universities/${item.university.id}`}
-                  >
-                    <span className="next-when">
-                      <strong>{period}</strong>
-                      <span>{opensLabel(period)}</span>
-                    </span>
-                    <span className="next-body">
-                      <strong>
-                        {actionLabel(item.status)} {item.university.shortName}
-                      </strong>
-                      <span className="next-meta">
-                        Next: {nextStepLabel(item.next)}
-                      </span>
-                    </span>
-                    <span className="next-count">
-                      {item.count}/{item.total}
-                      <Chevron />
-                    </span>
-                  </Link>
-                </li>
-              );
-            })}
-          </ol>
-        </>
-      ) : null}
+      <section className="universities-section" aria-label="Universities">
 
-      <h2 className="section-title">Universities</h2>
-      <ul className="directory">
-        <li className="dir-head" aria-hidden="true">
-          <span>University</span>
-          <span>Apply</span>
-          <span>Exam</span>
-          <span>Results</span>
-          <span>Status</span>
-        </li>
-        {applications.map((item) => (
-          <li key={item.university.id}>
-            <Link className="uni-row" to={`/universities/${item.university.id}`}>
-              <div className="uni-id">
-                <span className="mark" aria-hidden="true">
-                  {item.university.shortName}
-                </span>
-                <div>
-                  <h3>{item.university.name}</h3>
-                  <p className="program-line">
-                    {item.programName ?? <em className="missing">No program chosen</em>} ·{" "}
-                    {item.university.test}
-                  </p>
+        <div className="uni-grid">
+          {applications.map((item) => (
+            <Link
+              key={item.university.id}
+              to={`/universities/${item.university.id}`}
+              className="uni-card"
+              data-uni={item.university.id}
+            >
+              <div className="uni-card-header">
+                <UniversityLogo id={item.university.id} name={item.university.shortName} />
+                <div className="uni-card-title-group">
+                  <div className="uni-card-topline">
+                    <span className="uni-test-badge">{item.university.test}</span>
+                    <span className="uni-shortname">{item.university.shortName}</span>
+                  </div>
+                  <h3 className="uni-card-name">{item.university.name}</h3>
                 </div>
               </div>
-              <dl className="facts">
-                <div>
-                  <dt>Apply</dt>
-                  <dd>{periods[item.university.id]}</dd>
-                </div>
-                <div>
-                  <dt>Exam</dt>
-                  <dd>{item.university.examDates}</dd>
-                </div>
-                <div>
-                  <dt>Results</dt>
-                  <dd>{item.university.releaseOfResults}</dd>
-                </div>
-              </dl>
-              <div className="row-status">
+
+              <div className="uni-card-program">
+                <span className="program-icon" aria-hidden="true">
+                  <Icon name="program" size={16} />
+                </span>
+                <span className="program-text">
+                  {item.programName ?? <em className="missing">No program yet</em>}
+                </span>
+              </div>
+
+              <RequirementBar application={item} />
+
+              <div className="uni-card-footer">
                 <StatusTag status={item.status} />
-                <span className="count">
-                  {item.count} of {item.total}
+                <span className="open-label">
+                  {actionLabel(item.status)} <Chevron />
                 </span>
               </div>
             </Link>
-          </li>
-        ))}
-      </ul>
+          ))}
+        </div>
+      </section>
     </section>
   );
 }

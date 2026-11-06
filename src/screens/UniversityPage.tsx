@@ -1,12 +1,18 @@
 import { Link, useParams } from "react-router-dom";
+import { Icon } from "../components/Icon";
+import { MilestoneStepper } from "../components/MilestoneStepper";
+import { ProgressRing } from "../components/ProgressRing";
 import { StatusTag } from "../components/StatusTag";
+import { UniversityLogo } from "../components/UniversityLogo";
 import { applicant, findUniversity, type Requirement } from "../data";
-import { formatDate, getApplication, isRequirementDone, opensLabel } from "../status";
+import { getApplication, isRequirementDone, opensLabel } from "../status";
+import { scholarships } from "../scholarships";
 import { useDemo } from "../store";
 
 function ChecklistGroup({
   title,
   note,
+  scope,
   items,
   isDone,
   disabled,
@@ -14,15 +20,23 @@ function ChecklistGroup({
 }: {
   title: string;
   note?: string;
+  scope: Requirement["scope"];
   items: Requirement[];
   isDone: (requirement: Requirement) => boolean;
   disabled: boolean;
   onToggle: (requirement: Requirement) => void;
 }) {
   if (items.length === 0) return null;
+
+  const scopeLabel =
+    scope === "shared" ? "Shared" : scope === "school" ? "High School" : "University";
+
   return (
-    <div className="group">
-      <h3>{title}</h3>
+    <div className="checklist-group">
+      <div className="checklist-group-header">
+        <h3>{title}</h3>
+        <span className={`scope-badge scope-${scope}`}>{scopeLabel}</span>
+      </div>
       {note ? <p className="group-note">{note}</p> : null}
       <ul className="checklist">
         {items.map((requirement) => {
@@ -36,7 +50,16 @@ function ChecklistGroup({
                   disabled={disabled}
                   onChange={() => onToggle(requirement)}
                 />
-                <span>{requirement.label}</span>
+                <span className="check-custom" aria-hidden="true">
+                  <svg viewBox="0 0 20 20" fill="currentColor">
+                    <path
+                      fillRule="evenodd"
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </span>
+                <span className="check-label">{requirement.label}</span>
               </label>
             </li>
           );
@@ -56,7 +79,7 @@ export function UniversityPage() {
       <section className="page-head">
         <h1>That university is not in this demo.</h1>
         <p>
-          <Link to="/">Back to the universities</Link>
+          <Link to="/universities">Back to the universities</Link>
         </p>
       </section>
     );
@@ -77,109 +100,168 @@ export function UniversityPage() {
 
   const missingItems =
     app.missing.length > 0
-      ? `${app.missing.length} checklist ${app.missing.length === 1 ? "item" : "items"} left`
+      ? `${app.missing.length} checklist ${app.missing.length === 1 ? "item" : "items"}`
       : null;
 
   return (
-    <section>
-      <p className="back">
-        <Link to="/">All universities</Link>
-      </p>
-      <header className="page-head">
-        <div className="title-lockup">
-          <span className="mark" aria-hidden="true">
-            {university.shortName}
-          </span>
-          <h1>{university.name}</h1>
+    <section className="uni-detail-page" data-uni={university.id}>
+      <nav className="breadcrumb" aria-label="Breadcrumb">
+        <Link to="/universities" className="breadcrumb-link">
+          <Icon name="back" size={16} />
+          All universities
+        </Link>
+      </nav>
+
+      <header className="uni-hero">
+        <div className="uni-hero-main">
+          <UniversityLogo id={university.id} name={university.shortName} />
+          <div className="uni-hero-content">
+            <div className="uni-hero-tags">
+              <span className="uni-test-badge">{university.test}</span>
+              <span className="uni-tag-pill">{university.shortName}</span>
+            </div>
+            <h1>{university.name}</h1>
+            <p className="uni-intro">{university.intro}</p>
+          </div>
         </div>
-        <p>{university.intro}</p>
       </header>
 
-      <div className={`progress-block progress-${app.status.replace(/ /g, "-").toLowerCase()}`}>
-        <div className="progress-copy">
-          <StatusTag status={app.status} />
-          <strong>
-            {app.count} of {app.total} done
-          </strong>
-          <span className="program-line">
-            {app.programName ? `Program: ${app.programName}` : "No program chosen yet"}
-          </span>
+      {/* 3-Stage Milestone Stepper */}
+      <MilestoneStepper university={university} app={app} />
+
+      {/* Celebration Banners */}
+      {app.status === "Submitted" ? (
+        <div className="celebration-banner is-submitted" role="status">
+          <div className="celebration-icon" aria-hidden="true">
+            <Icon name="celebrate" size={28} />
+          </div>
+          <div className="celebration-copy">
+            <strong>Marked submitted</strong>
+            <p>
+              Watch the {university.shortName} portal for your {university.test} permit. Results
+              come out in {university.releaseOfResults}.
+            </p>
+          </div>
+          <button
+            type="button"
+            className="button-quiet"
+            onClick={() => state.undoSubmitted(university.id)}
+          >
+            Reopen checklist
+          </button>
         </div>
+      ) : app.status === "Ready to submit" ? (
+        <div className="celebration-banner is-ready" role="status">
+          <div className="celebration-icon" aria-hidden="true">
+            <Icon name="sparkle" size={28} />
+          </div>
+          <div className="celebration-copy">
+            <strong>Ready to submit</strong>
+            <p>
+              Submit on the {university.shortName} portal ({opensLabel(period).toLowerCase()}), then
+              mark it here.
+            </p>
+          </div>
+          <button
+            type="button"
+            className="button-primary celebration-btn"
+            onClick={() => state.markSubmitted(university.id)}
+          >
+            Mark as submitted
+          </button>
+        </div>
+      ) : null}
+
+      {/* Progress Card */}
+      <div className={`progress-card status-${app.status.replace(/ /g, "-").toLowerCase()}`}>
+        <div className="progress-card-top">
+          <div className="progress-card-info">
+            <div className="progress-status-row">
+              <StatusTag status={app.status} />
+              <span className="progress-count-text">
+                <strong>{app.count}</strong> of <strong>{app.total}</strong> requirements done
+              </span>
+            </div>
+            <div className="progress-program-badge">
+              <span className="program-icon" aria-hidden="true">
+                <Icon name="program" size={16} />
+              </span>
+              <span>
+                {app.programName ? (
+                  <>
+                    Program: <strong>{app.programName}</strong>
+                  </>
+                ) : (
+                  <em className="missing">No program yet</em>
+                )}
+              </span>
+            </div>
+          </div>
+          <div className="progress-card-ring">
+            <ProgressRing value={app.count} max={app.total} size={54} strokeWidth={4.5} />
+          </div>
+        </div>
+
         <div
           className="meter"
           role="meter"
           aria-valuemin={0}
           aria-valuemax={app.total}
           aria-valuenow={app.count}
-          aria-label="Checklist progress"
+          aria-label="Checklist completion percentage"
         >
           <span style={{ width: `${percent}%` }} />
         </div>
-        <div className="progress-action" aria-live="polite">
-          {app.status === "Submitted" && app.submittedOn ? (
-            <>
-              <p>
-                Marked submitted on {formatDate(app.submittedOn)}. Watch the {university.test}{" "}
-                portal for your exam permit; results come out in {university.releaseOfResults}.
-              </p>
-              <button
-                type="button"
-                className="button-quiet"
-                onClick={() => state.undoSubmitted(university.id)}
-              >
-                Undo
-              </button>
-            </>
-          ) : app.status === "Ready to submit" ? (
-            <>
-              <p>
-                Everything is ready. Submit on the {university.shortName} portal (
-                {opensLabel(period).toLowerCase()}), then mark it here.
-              </p>
-              <button
-                type="button"
-                className="button-primary"
-                onClick={() => state.markSubmitted(university.id)}
-              >
-                Mark as submitted
-              </button>
-            </>
-          ) : (
+
+        {app.status === "Not started" || app.status === "In progress" ? (
+          <div className="progress-card-guidance">
             <p>
-              To be ready to submit:{" "}
-              {app.programName ? null : <a href="#programs">choose a program</a>}
-              {!app.programName && missingItems ? " and finish " : null}
+              Still to do:{" "}
+              {app.programName ? null : <a href="#programs">select a target program</a>}
+              {!app.programName && missingItems ? " and complete " : null}
               {missingItems}.
             </p>
-          )}
-        </div>
+          </div>
+        ) : null}
       </div>
 
       <div className="split">
-        <div>
-          <h2>Checklist</h2>
-          <p className="lede">
-            {locked
-              ? "Locked while this application is marked submitted. Undo to change it."
-              : "Tick a line when you have it. The status above follows the ticks."}
-          </p>
+        <div className="checklist-column">
+          <div className="checklist-header-row">
+            <h2>Checklist</h2>
+            <span className="checklist-lock-note">
+              {locked ? (
+                <>
+                  <Icon name="lock" size={14} />
+                  Locked while submitted
+                </>
+              ) : (
+                "Tick items as you get them"
+              )}
+            </span>
+          </div>
+
           <ChecklistGroup
-            title="Bring these"
-            note="Shared with every university. Ticking one here ticks it everywhere."
+            title="Shared documents"
+            scope="shared"
+            note="Get once, use for every school."
             items={byScope("shared")}
             isDone={isDone}
             disabled={locked}
             onToggle={onToggle}
           />
           <ChecklistGroup
-            title={`Ask ${applicant.school}`}
+            title="High school records"
+            scope="school"
+            note={`Prepared by the ${applicant.school} registrar.`}
             items={byScope("school")}
             isDone={isDone}
             disabled={locked}
             onToggle={onToggle}
           />
           <ChecklistGroup
-            title={`${university.shortName} also asks for`}
+            title={`${university.shortName} forms`}
+            scope="university"
             items={byScope("university")}
             isDone={isDone}
             disabled={locked}
@@ -188,51 +270,93 @@ export function UniversityPage() {
         </div>
 
         <aside className="side">
-          <h2>When</h2>
-          <dl className="facts facts-stack">
-            <div>
-              <dt>Application period</dt>
-              <dd>
-                {period} <span className="dd-note">{opensLabel(period)}</span>
-              </dd>
+          <div className="side-card">
+            <h2 className="side-title">Dates and fees</h2>
+            <dl className="facts facts-stack">
+              <div className="fact-item">
+                <dt>Application window</dt>
+                <dd>
+                  <strong>{period}</strong> <span className="dd-note">({opensLabel(period)})</span>
+                </dd>
+              </div>
+              <div className="fact-item">
+                <dt>Entrance Exam ({university.test})</dt>
+                <dd>
+                  <strong>{university.examDates}</strong>
+                </dd>
+              </div>
+              <div className="fact-item">
+                <dt>Release of Results</dt>
+                <dd>
+                  <strong>{university.releaseOfResults}</strong>
+                </dd>
+              </div>
+            </dl>
+            <div className="aside-notes">
+              <p className="aside-note">
+                <Icon name="info" size={16} />
+                <span>{university.feeNote}</span>
+              </p>
+              {university.rankingNote ? (
+                <p className="aside-note">
+                  <Icon name="pin" size={16} />
+                  <span>{university.rankingNote}</span>
+                </p>
+              ) : null}
             </div>
-            <div>
-              <dt>Exam dates</dt>
-              <dd>{university.examDates}</dd>
-            </div>
-            <div>
-              <dt>Release of results</dt>
-              <dd>{university.releaseOfResults}</dd>
-            </div>
-          </dl>
-          <p className="aside-note">{university.feeNote}</p>
-          {university.rankingNote ? <p className="aside-note">{university.rankingNote}</p> : null}
+          </div>
 
-          <fieldset id="programs" className="programs" disabled={locked}>
-            <legend>
-              <h2>Choose a program</h2>
+          <div className="side-card">
+            <h2 className="side-title">Scholarships</h2>
+            <ul className="side-scholarships">
+              {scholarships
+                .filter((item) => item.universityId === university.id || item.universityId === null)
+                .map((item) => (
+                  <li key={item.id}>
+                    <Icon name="award" size={16} />
+                    <span>
+                      <strong>{item.name}</strong>
+                      <span>{item.covers}</span>
+                    </span>
+                  </li>
+                ))}
+            </ul>
+            <Link to="/scholarships" className="breadcrumb-link">
+              All scholarships
+              <Icon name="arrow" size={16} />
+            </Link>
+          </div>
+
+          <fieldset id="programs" className="programs side-card" disabled={locked}>
+            <legend className="side-title">
+              <h2>Program</h2>
             </legend>
-            {university.programs.map((program) => {
-              const chosen = program.id === app.programId;
-              return (
-                <label key={program.id} className={chosen ? "program chosen" : "program"}>
-                  <input
-                    type="radio"
-                    name={`program-${university.id}`}
-                    value={program.id}
-                    checked={chosen}
-                    onChange={() => state.chooseProgram(university.id, program.id)}
-                  />
-                  <span>
-                    <span className="program-name">{program.name}</span>
-                    <span className="program-summary">{program.summary}</span>
-                    {chosen ? (
-                      <span className="choice">{applicant.name.split(" ")[0]}’s choice</span>
-                    ) : null}
-                  </span>
-                </label>
-              );
-            })}
+            <p className="programs-desc">
+              Pick the degree you’re applying for.
+            </p>
+            <div className="program-options">
+              {university.programs.map((program) => {
+                const chosen = program.id === app.programId;
+                return (
+                  <label key={program.id} className={chosen ? "program chosen" : "program"}>
+                    <input
+                      type="radio"
+                      name={`program-${university.id}`}
+                      value={program.id}
+                      checked={chosen}
+                      onChange={() => state.chooseProgram(university.id, program.id)}
+                    />
+                    <div className="program-body">
+                      <div className="program-name-row">
+                        <strong className="program-name">{program.name}</strong>
+                        {chosen ? <span className="choice-pill">Selected</span> : null}
+                      </div>
+                      <span className="program-summary">{program.summary}</span>
+                    </div>
+                  </label>
+                );
+              })}
+            </div>
           </fieldset>
         </aside>
       </div>

@@ -130,3 +130,23 @@ export function formatDate(iso: string): string {
     year: "numeric",
   });
 }
+
+/** Twelve timeline columns, starting last month so a window that just opened still shows. */
+export function timelineMonths(today: Date = new Date()): Month[] {
+  const first = (today.getMonth() + 11) % 12;
+  return Array.from({ length: 12 }, (_, index) => MONTHS[(first + index) % 12]);
+}
+
+/** Column of a month in timelineMonths: 0 is last month, 1 is this month. */
+export function timelineColumn(month: Month, today: Date = new Date()): number {
+  return monthsUntil(month, today) + 1;
+}
+
+/** Relative month for a dated event: "Last month", "This month", "Next month", "In 4 months". */
+export function whenLabel(month: Month, today: Date = new Date()): string {
+  const months = monthsUntil(month, today);
+  if (months === -1) return "Last month";
+  if (months === 0) return "This month";
+  if (months === 1) return "Next month";
+  return `In ${months} months`;
+}
