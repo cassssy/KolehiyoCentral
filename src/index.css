@@ -14,8 +14,8 @@
   --seal: #1f5fc8;
   --seal-hover: #184da3;
   --seal-light: #eef4fd;
-  --amber: #4a5d82;
-  --amber-soft: #eef1f6;
+  --amber: #a96704;
+  --amber-soft: #fff3d6;
   --shadow-sm: 0 2px 6px rgba(10, 10, 10, 0.05);
   --shadow-md: 0 6px 18px rgba(10, 10, 10, 0.08);
   --shadow-lg: 0 16px 36px rgba(10, 10, 10, 0.16);
@@ -27,21 +27,22 @@
   --sans: "Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
   /* University School Brand Colors */
-  --up-primary: #4c51bf;
-  --up-light: #eff0fb;
-  --up-border: #cfd2f3;
+  --up-primary: #d8182b;
+  --up-light: #fdeef0;
+  --up-border: #f7c4ca;
 
-  --ateneo-primary: #0e7cb5;
-  --ateneo-light: #ebf6fc;
-  --ateneo-border: #bfe0f2;
+  --ateneo-primary: #1251e2;
+  --ateneo-light: #edf2fe;
+  --ateneo-border: #c3d4fa;
 
-  --dlsu-primary: #0b7d6f;
-  --dlsu-light: #e8f6f3;
-  --dlsu-border: #b5e2da;
+  --dlsu-primary: #0b894a;
+  --dlsu-light: #e9f8ef;
+  --dlsu-border: #b4e8c9;
 
-  --ust-primary: #7c4fc4;
-  --ust-light: #f4effc;
-  --ust-border: #dccdf3;
+  --ust-primary: #f5a800;
+  --ust-ink: #a96704;
+  --ust-light: #fff7e0;
+  --ust-border: #fde2a0;
 
   color: var(--room-ink);
   background: var(--room);
@@ -670,11 +671,11 @@ a {
 }
 
 .progress-ring-wrap.is-complete .progress-ring-bar {
-  stroke: #0b7d6f;
+  stroke: #0b894a;
 }
 
 .progress-ring-wrap.is-complete .progress-ring-label {
-  color: #0b7d6f;
+  color: #0b894a;
 }
 
 /* Status Tags */
@@ -701,9 +702,9 @@ a {
 }
 
 .status-ready-to-submit {
-  background: #dcf3ef;
-  color: #0a5a50;
-  border: 1px solid #a5dcd2;
+  background: #dcf5e6;
+  color: #076b39;
+  border: 1px solid #9fe0b9;
 }
 
 .status-submitted {
@@ -831,8 +832,8 @@ a {
 }
 
 .milestone-step.is-done .milestone-indicator {
-  background: #0b7d6f;
-  border-color: #0b7d6f;
+  background: #0b894a;
+  border-color: #0b894a;
   color: #ffffff;
 }
 
@@ -886,7 +887,7 @@ a {
 }
 
 .milestone-divider.is-done {
-  background: #0b7d6f;
+  background: #0b894a;
 }
 
 /* Celebration Banners */
@@ -912,9 +913,9 @@ a {
 }
 
 .celebration-banner.is-submitted {
-  background: #e8f6f3;
-  border-color: #a5dcd2;
-  color: #0a5a50;
+  background: #e9f8ef;
+  border-color: #9fe0b9;
+  color: #076b39;
 }
 
 .celebration-banner.is-ready {
@@ -1069,9 +1070,9 @@ a {
 }
 
 .scope-shared {
-  background: #e8f6f3;
-  color: #0a5a50;
-  border: 1px solid #b5e2da;
+  background: #e9f8ef;
+  color: #076b39;
+  border: 1px solid #b4e8c9;
 }
 
 .scope-school {
@@ -1166,8 +1167,8 @@ a {
   border-color: var(--dlsu-primary);
 }
 .uni-detail-page[data-uni="ust"] .check input:checked ~ .check-custom {
-  background: var(--ust-primary);
-  border-color: var(--ust-primary);
+  background: var(--ust-ink);
+  border-color: var(--ust-ink);
 }
 
 .check input:checked ~ .check-custom svg {
@@ -1308,7 +1309,7 @@ a {
   box-shadow: 0 0 0 2px var(--dlsu-primary);
 }
 .uni-detail-page[data-uni="ust"] .program.chosen {
-  border-color: var(--ust-primary);
+  border-color: var(--ust-ink);
   box-shadow: 0 0 0 2px var(--ust-primary);
 }
 
@@ -1485,8 +1486,8 @@ a {
   align-items: center;
   gap: 0.3rem;
   padding: 0.15rem 0.55rem;
-  background: #dcf3ef;
-  color: #0a5a50;
+  background: #dcf5e6;
+  color: #076b39;
   border-radius: 9999px;
   font-size: 0.8125rem;
   font-weight: 600;
@@ -1596,7 +1597,7 @@ a {
 }
 .registrar-uni-tag[data-uni="ust"] {
   background: var(--ust-light);
-  color: var(--ust-primary);
+  color: var(--ust-ink);
 }
 
 /* ==========================================================================
@@ -1972,6 +1973,7 @@ summary:focus-visible {
 }
 [data-uni="ust"] {
   --brand: var(--ust-primary);
+  --brand-ink: var(--ust-ink);
   --brand-light: var(--ust-light);
   --brand-border: var(--ust-border);
 }
@@ -2071,7 +2073,7 @@ summary:focus-visible {
   font-family: var(--serif);
   font-size: 1.25rem;
   font-weight: 600;
-  color: var(--brand);
+  color: var(--brand-ink, var(--brand));
 }
 
 .radial {
@@ -2244,13 +2246,13 @@ summary:focus-visible {
 }
 
 .marker-glyph {
-  color: var(--brand);
+  color: var(--brand-ink, var(--brand));
   flex: none;
 }
 
 .marker-opens {
   background: var(--paper-card);
-  border-color: var(--brand);
+  border-color: var(--brand-ink, var(--brand));
   box-shadow: 0 2px 6px rgba(10, 10, 10, 0.1);
 }
 
@@ -2347,7 +2349,7 @@ summary:focus-visible {
 [data-uni="gov"] {
   --brand: var(--seal);
   --brand-light: var(--seal-light);
-  --brand-border: #b5e2da;
+  --brand-border: #b4e8c9;
 }
 
 .filters {
@@ -2585,7 +2587,7 @@ summary:focus-visible {
 }
 
 .scholarship-who li::marker {
-  color: var(--brand);
+  color: var(--brand-ink, var(--brand));
 }
 
 .scholarship-how {
