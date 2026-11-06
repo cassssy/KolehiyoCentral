@@ -1,6 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import { Icon } from "../components/Icon";
 import { MilestoneStepper } from "../components/MilestoneStepper";
+import { ParcelTracker } from "../components/ParcelTracker";
 import { ProgressRing } from "../components/ProgressRing";
 import { StatusTag } from "../components/StatusTag";
 import { UniversityLogo } from "../components/UniversityLogo";
@@ -171,6 +172,8 @@ export function UniversityPage() {
           </button>
         </div>
       ) : null}
+
+      <ParcelTracker app={app} />
 
       {/* Progress Card */}
       <div className={`progress-card status-${app.status.replace(/ /g, "-").toLowerCase()}`}>

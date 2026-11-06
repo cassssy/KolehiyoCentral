@@ -43,6 +43,8 @@ export type University = {
   applicationPeriod: Month;
   examDates: Month;
   releaseOfResults: Month;
+  /** Where the application "parcel" lands: the campus admissions office. */
+  hub: string;
   intro: string;
   feeNote: string;
   rankingNote?: string;
@@ -97,6 +99,7 @@ export const universities: University[] = [
     applicationPeriod: "March",
     examDates: "August",
     releaseOfResults: "April",
+    hub: "Diliman Hub (UP Office of Admissions)",
     intro:
       "The national university. This page shows freshman admission through the UPCAT, with degree programs from UP Diliman.",
     feeNote: "Filipino applicants pay no UPCAT fee.",
@@ -143,6 +146,7 @@ export const universities: University[] = [
     applicationPeriod: "July",
     examDates: "October",
     releaseOfResults: "April",
+    hub: "Katipunan Hub (Ateneo Office of Admission and Aid)",
     intro:
       "Ateneo de Manila in Quezon City. Freshman applicants take the Ateneo College Entrance Test.",
     feeNote:
@@ -191,6 +195,7 @@ export const universities: University[] = [
     applicationPeriod: "October",
     examDates: "January",
     releaseOfResults: "April",
+    hub: "Taft Hub (DLSU Office of Admissions)",
     intro:
       "De La Salle University on Taft Avenue, Manila. Freshman applicants take the DLSU College Admission Test.",
     feeNote:
@@ -240,6 +245,7 @@ export const universities: University[] = [
     applicationPeriod: "September",
     examDates: "November",
     releaseOfResults: "April",
+    hub: "España Hub (UST Office for Admissions)",
     intro:
       "The University of Santo Tomas on España Boulevard, Manila. Freshman applicants take the UST Entrance Test.",
     feeNote:

@@ -43,6 +43,14 @@ const paths = {
       <circle cx="12" cy="11" r="2" />
     </>
   ),
+  truck: (
+    <>
+      <path d="M2.5 6.5h11v10h-11z" />
+      <path d="M13.5 10h4l3 3.5v3h-7" />
+      <circle cx="7" cy="17.5" r="1.75" />
+      <circle cx="17" cy="17.5" r="1.75" />
+    </>
+  ),
   arrow: <path d="M5 12h14m-5-5 5 5-5 5" />,
   back: <path d="M19 12H5m5-5-5 5 5 5" />,
   search: (

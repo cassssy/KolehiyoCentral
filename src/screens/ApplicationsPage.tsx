@@ -6,6 +6,7 @@ import { StatusTag } from "../components/StatusTag";
 import { UniversityLogo } from "../components/UniversityLogo";
 import { actionLabel, formatDate, nextStepLabel } from "../status";
 import { useApplications } from "../store";
+import { latestUpdate } from "../tracking";
 
 export function ApplicationsPage() {
   const applications = useApplications();
@@ -69,6 +70,11 @@ export function ApplicationsPage() {
                   <ProgressRing value={item.count} max={item.total} size={64} strokeWidth={6} />
                 </div>
               </div>
+
+              <p className="tracking-line">
+                <Icon name="truck" size={16} />
+                <span>{latestUpdate(item).title}</span>
+              </p>
             </Link>
           </li>
         ))}
