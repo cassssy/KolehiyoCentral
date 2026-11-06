@@ -27,21 +27,21 @@
   --sans: "Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
   /* University School Brand Colors */
-  --up-primary: #7b1113;
-  --up-light: #fdf2f4;
-  --up-border: #f0c3c8;
+  --up-primary: #4c51bf;
+  --up-light: #eff0fb;
+  --up-border: #cfd2f3;
 
-  --ateneo-primary: #0038a8;
-  --ateneo-light: #f0f5fd;
-  --ateneo-border: #bcd3f7;
+  --ateneo-primary: #0e7cb5;
+  --ateneo-light: #ebf6fc;
+  --ateneo-border: #bfe0f2;
 
-  --dlsu-primary: #005a36;
-  --dlsu-light: #eff8f3;
-  --dlsu-border: #b8e0cc;
+  --dlsu-primary: #0b7d6f;
+  --dlsu-light: #e8f6f3;
+  --dlsu-border: #b5e2da;
 
-  --ust-primary: #b87c08;
-  --ust-light: #fef9ed;
-  --ust-border: #f9e2ab;
+  --ust-primary: #7c4fc4;
+  --ust-light: #f4effc;
+  --ust-border: #dccdf3;
 
   color: var(--room-ink);
   background: var(--room);
@@ -609,7 +609,7 @@ a {
 
 .timeline-arrow {
   display: inline-flex;
-  color: #a39880;
+  color: #94a3b8;
   user-select: none;
 }
 
@@ -670,11 +670,11 @@ a {
 }
 
 .progress-ring-wrap.is-complete .progress-ring-bar {
-  stroke: #187754;
+  stroke: #0b7d6f;
 }
 
 .progress-ring-wrap.is-complete .progress-ring-label {
-  color: #187754;
+  color: #0b7d6f;
 }
 
 /* Status Tags */
@@ -701,9 +701,9 @@ a {
 }
 
 .status-ready-to-submit {
-  background: #def2e8;
-  color: #0b4e3a;
-  border: 1px solid #94d8b6;
+  background: #dcf3ef;
+  color: #0a5a50;
+  border: 1px solid #a5dcd2;
 }
 
 .status-submitted {
@@ -831,8 +831,8 @@ a {
 }
 
 .milestone-step.is-done .milestone-indicator {
-  background: #187754;
-  border-color: #187754;
+  background: #0b7d6f;
+  border-color: #0b7d6f;
   color: #ffffff;
 }
 
@@ -886,7 +886,7 @@ a {
 }
 
 .milestone-divider.is-done {
-  background: #187754;
+  background: #0b7d6f;
 }
 
 /* Celebration Banners */
@@ -912,15 +912,15 @@ a {
 }
 
 .celebration-banner.is-submitted {
-  background: #eaf6ef;
-  border-color: #a3deb8;
-  color: #0b4e3a;
+  background: #e8f6f3;
+  border-color: #a5dcd2;
+  color: #0a5a50;
 }
 
 .celebration-banner.is-ready {
   background: var(--gold-soft);
   border-color: #cfe0fb;
-  color: #5c3f08;
+  color: #33415c;
 }
 
 .celebration-icon {
@@ -1069,14 +1069,14 @@ a {
 }
 
 .scope-shared {
-  background: #e8f4ed;
-  color: #166542;
-  border: 1px solid #b7e0c8;
+  background: #e8f6f3;
+  color: #0a5a50;
+  border: 1px solid #b5e2da;
 }
 
 .scope-school {
   background: #eef1f6;
-  color: #8c5208;
+  color: #4a5d82;
   border: 1px solid #d5dce8;
 }
 
@@ -1129,7 +1129,7 @@ a {
   width: 1.2rem;
   height: 1.2rem;
   border-radius: 4px;
-  border: 2px solid #b5ab95;
+  border: 2px solid #94a3b8;
   background: #ffffff;
   display: flex;
   align-items: center;
@@ -1176,9 +1176,9 @@ a {
 }
 
 .check.done .check-label {
-  color: #7d8b81;
+  color: #64748b;
   text-decoration: line-through;
-  text-decoration-color: #b0bfb4;
+  text-decoration-color: #94a3b8;
 }
 
 .check-label {
@@ -1286,7 +1286,7 @@ a {
 
 .program:hover {
   background: #ffffff;
-  border-color: #b5a995;
+  border-color: #94a3b8;
 }
 
 .program.chosen {
@@ -1485,8 +1485,8 @@ a {
   align-items: center;
   gap: 0.3rem;
   padding: 0.15rem 0.55rem;
-  background: #def2e8;
-  color: #0b4e3a;
+  background: #dcf3ef;
+  color: #0a5a50;
   border-radius: 9999px;
   font-size: 0.8125rem;
   font-weight: 600;
@@ -2347,7 +2347,7 @@ summary:focus-visible {
 [data-uni="gov"] {
   --brand: var(--seal);
   --brand-light: var(--seal-light);
-  --brand-border: #b9d6ca;
+  --brand-border: #b5e2da;
 }
 
 .filters {
@@ -2390,7 +2390,7 @@ summary:focus-visible {
 }
 
 .search-field input::placeholder {
-  color: #6b7368;
+  color: #475569;
 }
 
 .chip-row {
